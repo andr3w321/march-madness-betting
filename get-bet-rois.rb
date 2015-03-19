@@ -13,6 +13,9 @@ class Team
   attr_accessor :silver_win_per
   attr_accessor :roi
   attr_accessor :quarter_kelly
+  attr_accessor :day
+  attr_accessor :date
+  attr_accessor :time
 
   def initialize(team_name)
     @team_name = team_name
@@ -21,6 +24,13 @@ class Team
     @silver_win_per = 0
     @roi = 0
     @quarter_kelly = 0
+    @day = ""
+    @date = ""
+    @time = ""
+  end
+
+  def datetime
+    return @day + " " + @date + " " + @time
   end
 end
 
@@ -68,13 +78,24 @@ def get_pinnacle
   doc = Nokogiri::HTML(agent.page.body)
   rows = doc.css('tr')
   teams = []
-  rows.each do |row|
-    if row.children.length > 7
-      if !row.children[6].text.empty?
-        #puts row.children[3].text.strip + "," + row.children[6].text.gsub(/[[:space:]]/, ' ').split.join
-        t = Team.new(replace_team_name_alias(row.children[3].text.strip))
-        t.money_line = row.children[6].text.gsub(/[[:space:]]/, ' ').split.join.to_f
+  for i in 0..rows.length-1
+    if rows[i].children.length > 7
+      if !rows[i].children[6].text.empty?
+        #puts rows[i].children[3].text.strip + "," + rows[i].children[6].text.gsub(/[[:space:]]/, ' ').split.join
+        t = Team.new(replace_team_name_alias(rows[i].children[3].text.strip))
+        t.money_line = rows[i].children[6].text.gsub(/[[:space:]]/, ' ').split.join.to_f
         t.line_win_per = 1/t.money_line
+        if(i % 2 == 0)
+          date = rows[i].children[1].text.split(' ')
+          t.day = date[0]
+          t.date = date[1]
+          t.time = rows[i+1].children[1].text
+        else
+          date = rows[i-1].children[1].text.split(' ')
+          t.day = date[0]
+          t.date = date[1]
+          t.time = rows[i].children[1].text
+        end
         teams.push(t)
       end
     end
@@ -124,9 +145,9 @@ def get_silver(teams)
 end
 
 def print_teams(teams)
-  printf "%-25s%-25s%-25s%-25s%-25s%-25s\n", "team_name", "money_line", "line_win_per", "silver_win_per", "roi", "1/4 kelly"
+  printf "%-25s%-25s%-25s%-25s%-25s%-25s%-25s\n", "date", "team_name", "money_line", "line_win_per", "silver_win_per", "roi", "1/4 kelly"
   for i in 0..teams.length-1
-    printf "%-25s%-25s%-25s%-25s%-25s%-25s\n", teams[i].team_name, teams[i].money_line.to_s, teams[i].line_win_per.to_s, teams[i].silver_win_per.to_s, teams[i].roi.to_s, teams[i].quarter_kelly.to_s
+    printf "%-25s%-25s%-25s%-25s%-25s%-25s%-25s\n", teams[i].datetime, teams[i].team_name, teams[i].money_line.to_s, teams[i].line_win_per.to_s, teams[i].silver_win_per.to_s, teams[i].roi.to_s, teams[i].quarter_kelly.to_s
   end
 end
 
