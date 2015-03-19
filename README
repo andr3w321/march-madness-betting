@@ -1,0 +1,4 @@
+Scrapes Nate Silver's fivethirtyeight March Madness handicapping and Pinnacle lines and prints the ROI and 1/4 kelly criterion bet sizes for various bets based on his handicapping.
+
+Periodically runs below command to update
+ruby get-bet-rois.rb > data/3-19-15-9:28am.txt
