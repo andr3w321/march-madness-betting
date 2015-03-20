@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'json'
 
 ROUND = 3
+TODAY = "Fri"
 
 class Team
   attr_accessor :team_name
@@ -127,7 +128,12 @@ def get_silver(teams)
     # once found save the roi and silver win percent
     for i in 0..teams.length-1
       if(cols[1] == teams[i].team_name)
-        teams[i].silver_win_per = cols[ROUND + 4].to_f
+        if(teams[i].day == TODAY)
+          tmp_round = ROUND
+        else
+          tmp_round = ROUND + 1
+        end
+        teams[i].silver_win_per = cols[tmp_round + 4].to_f
         teams[i].roi = (teams[i].silver_win_per * (teams[i].money_line - 1) - (1 - teams[i].silver_win_per)).to_f
         if(teams[i].roi > 0)
           b = teams[i].money_line - 1
