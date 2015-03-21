@@ -4,8 +4,8 @@ require 'mechanize'
 require 'nokogiri'
 require 'json'
 
-ROUND = 3
-TODAY = "Fri"
+ROUND = 4
+TODAY = "Sat"
 
 class Team
   attr_accessor :team_name
@@ -17,6 +17,8 @@ class Team
   attr_accessor :day
   attr_accessor :date
   attr_accessor :time
+  attr_accessor :point_spread
+  attr_accessor :spread_odds
 
   def initialize(team_name)
     @team_name = team_name
@@ -28,10 +30,16 @@ class Team
     @day = ""
     @date = ""
     @time = ""
+    @point_spread = 100
+    @spread_odds = 0
   end
 
   def datetime
     return @day + " " + @date + " " + @time
+  end
+
+  def handicap
+    return @point_spread + " " + @spread_odds
   end
 end
 
@@ -71,6 +79,20 @@ def replace_team_name_alias(name)
   return name
 end
 
+def calculate_spread(win_per)
+  #really rough assuming 1.5% for each 1/2 point
+  #return 100 if win_per == 0
+  #diff = win_per - 0.5
+  #half_points = diff / 0.015
+  #spread = -half_points.round() / 2.0
+  #return spread
+
+  #kinda rough log function to estimate
+  #points = 4.164873439*Math::log(ML-1,2) or
+  points = -64.355*win_per**3+99.987*win_per**2-76.836*win_per+21.812
+  return points.round
+end
+
 def get_pinnacle
   agent = Mechanize.new
   url = 'https://www.pinnaclesports.com/League/Basketball/NCAA/1/Lines.aspx'
@@ -97,6 +119,9 @@ def get_pinnacle
           t.date = date[1]
           t.time = rows[i].children[1].text
         end
+        handicap = rows[i].children[5].text.gsub(/[[:space:]][[:space:]][[:space:]][[:space:]]/, ',').split(',')
+        t.point_spread = handicap[0]
+        t.spread_odds = handicap[1]
         teams.push(t)
       end
     end
@@ -151,9 +176,9 @@ def get_silver(teams)
 end
 
 def print_teams(teams)
-  printf "%-25s%-25s%-25s%-25s%-25s%-25s%-25s\n", "date", "team_name", "money_line", "line_win_per", "silver_win_per", "roi", "1/4 kelly"
+  printf "%-25s%-25s%-12s%-12s%-12s%-12s%-25s%-25s%-25s\n", "date", "team_name", "spread", "implied_pts", "silver_pts", "money_line", "line_win_per", "silver_win_per", "roi", "1/4 kelly"
   for i in 0..teams.length-1
-    printf "%-25s%-25s%-25s%-25s%-25s%-25s%-25s\n", teams[i].datetime, teams[i].team_name, teams[i].money_line.to_s, teams[i].line_win_per.to_s, teams[i].silver_win_per.to_s, teams[i].roi.to_s, teams[i].quarter_kelly.to_s
+    printf "%-25s%-25s%-12s%-12s%-12s%-12s%-25s%-25s%-25s\n", teams[i].datetime, teams[i].team_name, teams[i].point_spread, calculate_spread(teams[i].line_win_per).to_s, calculate_spread(teams[i].silver_win_per).to_s, teams[i].money_line.to_s, teams[i].line_win_per.to_s, teams[i].silver_win_per.to_s, teams[i].roi.to_s, teams[i].quarter_kelly.to_s
   end
 end
 
