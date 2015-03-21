@@ -156,7 +156,7 @@ def get_silver(teams)
         if(teams[i].day == TODAY)
           tmp_round = ROUND
         else
-          tmp_round = ROUND + 1
+          tmp_round = ROUND #+ 1
         end
         teams[i].silver_win_per = cols[tmp_round + 4].to_f
         teams[i].roi = (teams[i].silver_win_per * (teams[i].money_line - 1) - (1 - teams[i].silver_win_per)).to_f
@@ -176,9 +176,9 @@ def get_silver(teams)
 end
 
 def print_teams(teams)
-  printf "%-25s%-25s%-12s%-12s%-12s%-12s%-25s%-25s%-25s\n", "date", "team_name", "spread", "implied_pts", "silver_pts", "money_line", "line_win_per", "silver_win_per", "roi", "1/4 kelly"
+  printf "%-25s%-25s%-12s%-12s%-12s%-12s%-25s%-25s%-25s%-25s\n", "date", "team_name", "spread", "implied_pts", "silver_pts", "money_line", "line_win_per", "silver_win_per", "roi", "1/4 kelly"
   for i in 0..teams.length-1
-    printf "%-25s%-25s%-12s%-12s%-12s%-12s%-25s%-25s%-25s\n", teams[i].datetime, teams[i].team_name, teams[i].point_spread, calculate_spread(teams[i].line_win_per).to_s, calculate_spread(teams[i].silver_win_per).to_s, teams[i].money_line.to_s, teams[i].line_win_per.to_s, teams[i].silver_win_per.to_s, teams[i].roi.to_s, teams[i].quarter_kelly.to_s
+    printf "%-25s%-25s%-12s%-12s%-12s%-12s%-25s%-25s%-25s%-25s\n", teams[i].datetime, teams[i].team_name, teams[i].point_spread, calculate_spread(teams[i].line_win_per).to_s, calculate_spread(teams[i].silver_win_per).to_s, teams[i].money_line.to_s, teams[i].line_win_per.to_s, teams[i].silver_win_per.to_s, teams[i].roi.to_s, teams[i].quarter_kelly.to_s
   end
 end
 
