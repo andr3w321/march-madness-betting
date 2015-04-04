@@ -1,0 +1,9 @@
+scraping from urls:
+https://www.pinnaclesports.com/League/Basketball/NCAA/1/Lines.aspx
+https://raw.githubusercontent.com/fivethirtyeight/data/master/march-madness-predictions-2015/mens/bracket-61.tsv
+
+date                     team_name                spread      implied_pts silver_pts  money_line  line_win_per             silver_win_per           roi                      1/4 kelly                
+Sat 4/4 03:05 PM         Michigan State           +5.5        5           5           3.09        0.3236245954692557       0.332930091849           0.02875398381340999      0.003439471748015549     
+Sat 4/4 05:45 PM         Kentucky                 -5          -5          -5          1.413       0.7077140835102619       0.693150712565           -0.020578043145654923    0                        
+Sat 4/4 05:45 PM         Wisconsin                +5          5           6           3.11        0.3215434083601286       0.306849287435           -0.04569871607715004     0                        
+Sat 4/4 03:05 PM         Duke                     -5.5        -5          -4          1.416       0.7062146892655368       0.667069908151           -0.05542901005818407     0                        
