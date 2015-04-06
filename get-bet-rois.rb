@@ -4,8 +4,8 @@ require 'mechanize'
 require 'nokogiri'
 require 'json'
 
-ROUND = 7
-TODAY = "Sat"
+ROUND = 8
+TODAY = "Mon"
 
 class Team
   attr_accessor :team_name

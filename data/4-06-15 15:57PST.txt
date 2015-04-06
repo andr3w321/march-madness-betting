@@ -1,0 +1,7 @@
+scraping from urls:
+https://www.pinnaclesports.com/League/Basketball/NCAA/1/Lines.aspx
+https://raw.githubusercontent.com/fivethirtyeight/data/master/march-madness-predictions-2015/mens/bracket-63.tsv
+
+date                     team_name                spread      implied_pts silver_pts  money_line  line_win_per             silver_win_per           roi                      1/4 kelly                
+Mon 4/6 06:20 PM         Wisconsin                -1          -1          0           1.869       0.5350454788657036       0.530650848481           -0.008213564189011036    0                        
+Mon 4/6 06:20 PM         Duke                     +1          0           1           2.02        0.49504950495049505      0.469349151519           -0.051914713931620005    0                        
